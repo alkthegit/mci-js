@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"windows": {
+		"options": {
+			"shell": {
+				"executable": "pwsh"
+			}
+		}
+	},
+	"tasks": [
+		{
+			"type": "shell",
+			// "tsconfig": "tsconfig.json",
+			// "problemMatcher": [
+			// 	"$tsc"
+			// ],
+			"command": "-Command ${workspaceFolder}/node_modules/.bin/tsc.cmd",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "tsc: сборка — tsconfig.json"
+		}
+	]
+}
