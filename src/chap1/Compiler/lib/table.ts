@@ -30,16 +30,12 @@ export class Table<T = number> {
                 null
         );
     }
-}
 
-export function update(t: Table, id: Table['id'], value: Table['value']): Table {
-    if (t == null) {
-        throw new ReferenceError('таблица не задана');
+    public update(id: Table<T>['id'], value: Table<T>['value']): Table<T> {
+        if (id == null || id === '') {
+            throw new ReferenceError('адрес в таблице неможет быть пустым');
+        }
+
+        return new Table<T>(id, value, this);
     }
-
-    if (id == null || id === '') {
-        throw new ReferenceError('адрес в таблице неможет быть пустым');
-    }
-
-    return new Table(id, value, t);
 }

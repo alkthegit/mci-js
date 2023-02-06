@@ -15,7 +15,9 @@
             "preLaunchTask": "tsc: сборка — tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/_dist/**/*.js"
-            ]
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "outputCapture": "std"
         }
     ]
 }

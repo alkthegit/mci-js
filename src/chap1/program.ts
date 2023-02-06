@@ -10,45 +10,121 @@ import { PairExpressionList } from "./Compiler/core/PairExpressionList";
 import { LastExpressionList } from "./Compiler/core/LastExpressionList";
 
 /**
-* Программа:
-* 
-* a := 5 + 3; b := (print(a, a - 1), 10 * a); print(b)
-* 
+* Программы
 */
-export const program1: Statement = new CompoundStatement(
-    new AssignStatement("a",
-        new OperandExpression(
-            new NumExpression(5),
-            Operator.Plus,
-            new NumExpression(3)
-        )
-    ),
+export const programs: Statement[] = [
+    /**
+     * a := 5 + 3; b := (print(a, a - 1), 10 * a); print(b)
+     */
     new CompoundStatement(
-        new AssignStatement("b",
-            new EseqExpression(
-                new PrintStatement(
-                    new PairExpressionList(
-                        new IdExpression("a"),
-                        new LastExpressionList(
-                            new OperandExpression(
-                                new IdExpression("a"),
-                                Operator.Minus,
-                                new NumExpression(1)
-                            )
-                        )
-                    )
-                ),
-                new OperandExpression(
-                    new NumExpression(10),
-                    Operator.Times,
-                    new IdExpression("a")
-                )
+        new AssignStatement("a",
+            new OperandExpression(
+                new NumExpression(5),
+                Operator.Plus,
+                new NumExpression(3)
             )
         ),
-        new PrintStatement(
-            new LastExpressionList(
-                new IdExpression("b")
+        new CompoundStatement(
+            new AssignStatement("b",
+                new EseqExpression(
+                    new PrintStatement(
+                        new PairExpressionList(
+                            new IdExpression("a"),
+                            new LastExpressionList(
+                                new OperandExpression(
+                                    new IdExpression("a"),
+                                    Operator.Minus,
+                                    new NumExpression(1)
+                                )
+                            )
+                        )
+                    ),
+                    new OperandExpression(
+                        new NumExpression(10),
+                        Operator.Times,
+                        new IdExpression("a")
+                    )
+                )
+            ),
+            new PrintStatement(
+                new LastExpressionList(
+                    new IdExpression("b")
+                )
+            )
+        )
+    ),
+
+    /**
+     * a := 5; с := (print(a), a - 1); a := a + c; b := (print(a, a + 2), 7 * a); print(b)
+     * 
+     * результат:
+     *  a = 5
+     *  > 5
+     *  c = 4
+     *  a = 9
+     *  > 9
+     *  > 11
+     *  b = 63
+     *  > 63
+     *  
+     */
+    new CompoundStatement(
+        new AssignStatement(// a := 5
+            'a',
+            new NumExpression(5)
+        ),
+        new CompoundStatement(
+            new AssignStatement(// с := (print(a), a - 1)
+                'c',
+                new EseqExpression(
+                    new PrintStatement(// print(a)
+                        new LastExpressionList(new IdExpression('a'))
+                    ),
+                    new OperandExpression(// a - 1
+                        new IdExpression('a'),
+                        Operator.Minus,
+                        new NumExpression(1)
+                    )
+                )
+            ),
+            new CompoundStatement(
+                new AssignStatement(// a := a + 4
+                    'a',
+                    new OperandExpression(
+                        new IdExpression('a'),
+                        Operator.Plus,
+                        new IdExpression('c')
+                    )
+                ),
+                new CompoundStatement(
+                    new AssignStatement("b",
+                        new EseqExpression(
+                            new PrintStatement(
+                                new PairExpressionList(
+                                    new IdExpression("a"),
+                                    new LastExpressionList(
+                                        new OperandExpression(
+                                            new IdExpression("a"),
+                                            Operator.Plus,
+                                            new NumExpression(2)
+                                        )
+                                    )
+                                )
+                            ),
+                            new OperandExpression(
+                                new NumExpression(7),
+                                Operator.Times,
+                                new IdExpression("a")
+                            )
+                        )
+                    ),
+                    new PrintStatement(
+                        new LastExpressionList(
+                            new IdExpression("b")
+                        )
+                    )
+                )
             )
         )
     )
-);
+];

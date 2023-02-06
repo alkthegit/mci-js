@@ -10,7 +10,8 @@ import { LastExpressionList } from "../core/LastExpressionList";
 import { PairExpressionList } from "../core/PairExpressionList";
 import { OperandExpression, Operator } from "../core/OperandExpression";
 import { EseqExpression } from "../core/EseqExpression";
-import { Table, update } from "./table";
+import { Table } from "./table";
+import { write, writeln } from "./interop";
 
 let maxArgs = 0;
 export function maxargs(stm: Statement): number {
@@ -87,7 +88,7 @@ function interpStm(s: Statement, t: Table): Table {
                 fountTable.value = expResult.value;
             } else {
                 // если нет - добавляем в таблицу запись с левой частью (id)
-                t = update(t, s.id, expResult.value);
+                t = t.update(s.id, expResult.value);
             }
         }
 
@@ -103,12 +104,12 @@ function interpExp(e: Expression | ExpressionList, t: Table): ValAndTable {
     let expResult: ValAndTable;
     if (e instanceof LastExpressionList) {
         expResult = interpExp(e.head, t);
-        console.log(expResult.value);
+        writeln(expResult.value);
 
         return new ValAndTable(expResult.value, t);
     } else if (e instanceof PairExpressionList) {
         const headResult = interpExp(e.head, t);
-        console.log(headResult.value);
+        write(headResult.value);
 
         expResult = interpExp(e.expList, headResult.table);
 
